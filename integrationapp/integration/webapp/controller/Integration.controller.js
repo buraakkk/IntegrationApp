@@ -15,8 +15,6 @@ sap.ui.define([
 
                 this.oOwnerComponent = this.getOwnerComponent();
 
-                
-
                 this.oIntegrationModel = this.getOwnerComponent().getModel("integration");
 
                 this.oIntegrationModel.read("/IntegrationPackages?$format=json", {
