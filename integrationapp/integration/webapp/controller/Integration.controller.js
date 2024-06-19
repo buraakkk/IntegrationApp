@@ -160,7 +160,7 @@ sap.ui.define([
             handleF4Generic: function () {
                 // Create a ValueHelpDialog instance
                 var oValueHelpDialog = new sap.ui.comp.valuehelpdialog.ValueHelpDialog({
-                    title: "Package ID Search Help Deployment2",
+                    title: "Package ID Search Help Deployment3",
                     supportMultiselect: false,
                     supportRanges: false,
                     key: "Id", // Specify the key for the value help dialog
