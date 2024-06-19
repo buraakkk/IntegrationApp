@@ -1,0 +1,13 @@
+<mvc:View controllerName="integration.controller.App"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+       <Shell id="_IDGenShell1">
+        <App id="app">
+            <mvc:XMLView
+                id="_IDGenXMLView1"
+                viewName="integration.view.Integration"
+            />
+        </App>
+    </Shell>
+</mvc:View>

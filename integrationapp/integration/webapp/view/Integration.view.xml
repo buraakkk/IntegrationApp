@@ -1,0 +1,134 @@
+<mvc:View
+    controllerName="integration.controller.Integration"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:t="sap.ui.table"
+    xmlns:u="sap.ui.unified"
+    xmlns:comp="sap.ui.comp"
+>
+    <ScrollContainer
+        id="_IDGenScrollContainer1"
+        height="100%"
+        vertical="true"
+    >
+        <Table
+            id="_IDGenTable1"
+            items="{artifactsModel>/}"
+            growing="true"
+            growingThreshold="20"
+        >
+            <noData>
+                <BusyIndicator
+                    id="_IDGenBusyIndicator1"
+                    class="sapUiMediumMargin"
+                />
+            </noData>
+            <headerToolbar>
+                <OverflowToolbar id="_IDGenToolbar1">
+                    <content>
+                        <Title
+                            id="_IDGenTitle1"
+                            text="{i18n>packageListTitle}"
+                        />
+                        <ToolbarSpacer id="_IDGenToolbarSpacer1" />
+                        <Input
+                            id="_IDGenSearchField4"
+                            width="auto"
+                            showValueHelp="true" 
+                            valueHelpRequest=".handleF4Generic"
+                            placeholder="Filter by Package ID Search Help"
+                        />
+                        <SearchField
+                            id="_IDGenSearchField3"
+                            width="auto"
+                            search=".onFilterPackage"
+                            placeholder="Filter by Package ID"
+                        />
+                        <Button
+                            id="_IDGenButton1"
+                            icon="sap-icon://sort"
+                            tooltip="Sort by Artifacts Ids"
+                            press=".onSort"
+                        />
+                        <Button
+                            id="_IDGenRefreshButton"
+                            icon="sap-icon://refresh"
+                            tooltip="Refresh Data"
+                            press=".onRefreshData"
+                        />
+                    </content>
+                </OverflowToolbar>
+            </headerToolbar>
+            <infoToolbar>
+                <OverflowToolbar id="_IDGenOverflowToolbar1">
+                    <Label
+                        id="_IDGenLabel1"
+                        text="Wide range of available artifacts"
+                    />
+                </OverflowToolbar>
+            </infoToolbar>
+            <columns>
+                <Column id="_IDGenColumn3">
+                    <Text
+                        id="_IDGenText3"
+                        text="Package ID"
+                    />
+                </Column>
+                <Column id="_IDGenColumn1">
+                    <Text
+                        id="_IDGenText1"
+                        text="Artifact ID"
+                    />
+                </Column>
+                <Column id="_IDGenColumn2">
+                    <Text
+                        id="_IDGenText2"
+                        text="Name"
+                    />
+                </Column>
+                <Column id="_IDGenColumn4">
+                    <Text
+                        id="_IDGenText4"
+                        text="Designtime Version"
+                    />
+                </Column>
+                <Column id="_IDGenColumn9">
+                    <Text
+                        id="_IDGenText9"
+                        text="Runtime Version"
+                    />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem
+                    id="_IDGenColumnListItem1"
+                    vAlign="Middle"
+                >
+                    <cells>
+                        <ObjectIdentifier
+                            id="_IDGenObjectIdentifier1"
+                            title="{artifactsModel>PackageId}"
+                        />
+                        <Text
+                            id="_IDGenText6"
+                            text="{artifactsModel>Id}"
+                        />
+                        <Text
+                            id="_IDGenText5"
+                            text="{artifactsModel>Name}"
+                        />
+                        <Text
+                            id="_IDGenText7"
+                            text="{artifactsModel>Version}"
+                        />
+                        <Text
+                            id="_IDGenText8"
+                            text="{artifactsModel>RuntimeVersion}"
+                        />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </ScrollContainer>
+</mvc:View>
