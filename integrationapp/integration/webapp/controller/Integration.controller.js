@@ -125,7 +125,7 @@ sap.ui.define([
                         }
                     },
                     error: function (oErrorRunTime) {
-                        console.log("Error retrieving runtime data:", oErrorRunTime);
+                        console.log("Deployment Branch Error retrieving runtime data:", oErrorRunTime);
                         // If error occurs, return the original array to the caller
                         self.createModelofTable(allArtifacts);
                     }
