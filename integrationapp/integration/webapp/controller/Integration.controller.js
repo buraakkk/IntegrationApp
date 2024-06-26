@@ -25,14 +25,14 @@ sap.ui.define([
                         console.log(oError);
                     }
                 });
-                this.oIntegrationModel.read("/IntegrationRuntimeArtifacts?$format=json", {
-                    success: function (oData) {
-                        console.log(oData)
-                    }.bind(this),
-                    error: function (oError) {
-                        console.log(oError);
-                    }
-                });
+                // this.oIntegrationModel.read("/IntegrationRuntimeArtifacts?$format=json", {
+                //     success: function (oData) {
+                //         console.log(oData)
+                //     }.bind(this),
+                //     error: function (oError) {
+                //         console.log(oError);
+                //     }
+                // });
             },
 
             processPackagesResults: function (oData) {
@@ -125,7 +125,7 @@ sap.ui.define([
                         }
                     },
                     error: function (oErrorRunTime) {
-                        console.log("Deployment3 Branch Error retrieving runtime data:", oErrorRunTime);
+                        console.log("Error retrieving runtime data:", oErrorRunTime);
                         // If error occurs, return the original array to the caller
                         self.createModelofTable(allArtifacts);
                     }
