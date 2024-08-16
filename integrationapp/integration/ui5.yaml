@@ -1,5 +1,4 @@
 # yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
-
 specVersion: "3.1"
 metadata:
   name: integration
@@ -16,8 +15,12 @@ server:
             - /test-resources
           url: https://ui5.sap.com
         backend:
+          - path: /second
+            url: https://e27714b0trial.it-cpitrial06.cfapps.us10-001.hana.ondemand.com
+            destination: Prabhat_Integration_Suite  
           - path: /api
-            url: https://9e4ff605trial.it-cpitrial06.cfapps.us10-001.hana.ondemand.com
+            url: https://f38ebb9dtrial.it-cpitrial05.cfapps.us10-001.hana.ondemand.com
+            destination: Authentication     
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:

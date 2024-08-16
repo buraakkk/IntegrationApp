@@ -30,14 +30,22 @@ server:
       configuration:
         ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
         backend:
+          - path: /second
+            url: https://e27714b0trial.it-cpitrial06.cfapps.us10-001.hana.ondemand.com
+            destination: Prabhat_Integration_Suite  
           - path: /api
-            url: https://9e4ff605trial.it-cpitrial06.cfapps.us10-001.hana.ondemand.com
+            url: https://f38ebb9dtrial.it-cpitrial05.cfapps.us10-001.hana.ondemand.com
+            destination: Authentication 
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:
         mountPath: /
         services:
           - urlPath: /api/v1
+            metadataPath: ./webapp/localService/metadata.xml
+            mockdataPath: ./webapp/localService/data
+            generateMockData: true
+          - urlPath: /second/v1
             metadataPath: ./webapp/localService/metadata.xml
             mockdataPath: ./webapp/localService/data
             generateMockData: true

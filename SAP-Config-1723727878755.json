@@ -1,0 +1,10 @@
+{
+  "generator-approuter": {
+    "runningMode": "CloudPlatformManaged",
+    "required": "No",
+    "uaaCreate": true,
+    "cloudServiceName": "integration",
+    "shouldCreateHtml5Resource": true,
+    "uaaResourceAdded": true
+  }
+}

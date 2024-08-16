@@ -7,7 +7,7 @@
 |**Generation Platform**<br>SAP Business Application Studio|
 |**Template Used**<br>simple|
 |**Service Type**<br>OData Url|
-|**Service URL**<br>https://9e4ff605trial.it-cpitrial06.cfapps.us10-001.hana.ondemand.com/api/v1
+|**Service URL**<br>https://f38ebb9dtrial.it-cpitrial05.cfapps.us10-001.hana.ondemand.com/api/v1
 |**Module Name**<br>integration|
 |**Application Title**<br>Integration App|
 |**Namespace**<br>|
