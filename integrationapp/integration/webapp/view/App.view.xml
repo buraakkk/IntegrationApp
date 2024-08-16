@@ -2,14 +2,8 @@
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m"
-    height="100%" width="auto">
-       <Shell id="_IDGenShell1">
-        <App id="app" height="100%" width="100%">
-            <mvc:XMLView
-                id="_IDGenXMLView1"
-                viewName="integration.view.Integration"
-                height="100%" width="auto"
-            />
+    >
+        <App id="app">
         </App>
-    </Shell>
+
 </mvc:View>

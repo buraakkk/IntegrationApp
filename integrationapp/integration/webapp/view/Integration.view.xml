@@ -8,17 +8,14 @@
           xmlns:f="sap.f"
           xmlns:fb="sap.ui.comp.filterbar"
           xmlns:svm="sap.ui.comp.smartvariants"
-          height="100%" width="100%">
- <f:FlexibleColumnLayout id="flexibleColumnLayout" layout="OneColumn">
-    <f:beginColumnPages>
-     <Page id="_IDGenPage1"
+          >
+    <Page id="_IDGenPage1"
         class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--subHeader sapUiResponsivePadding--content sapUiResponsivePadding--footer"
         showNavButton="false">
         <content>
-            <VBox id="_IDGenVBox1" height="100%">
             <Table id="_IDGenTable1" enableBusyIndicator="true"
                    items="{ path: 'artifactsModel>/', sorter: { path: 'Name'}, events: {change: '.onItemsBindingChange'} }"
-                   class="sapUiResponsiveMargin" width="auto">
+                  >
                 <headerToolbar>
                     <OverflowToolbar id="_ovToolbar">
                         <content>
@@ -83,9 +80,6 @@
                     </ColumnListItem>
                 </items>
             </Table>
-          </VBox>
         </content>
      </Page>
-    </f:beginColumnPages>
-  </f:FlexibleColumnLayout>
 </mvc:View>
