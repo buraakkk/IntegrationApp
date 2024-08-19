@@ -41,8 +41,12 @@ sap.ui.define(
 
       onInit: function () {
         this.oOwnerComponent = this.getOwnerComponent();
-        this.oIntegrationModel = this.getOwnerComponent().getModel("integration");
+        this.oIntegrationModel =
+          this.getOwnerComponent().getModel("integration");
         this.oQualityModel = this.getOwnerComponent().getModel("quality");
+        this.oTestModel = this.getOwnerComponent().getModel("test");
+        this.bQualityModelAvailable = false;
+        this.bTestModelAvailable = false;
 
         var oViewModel = new JSONModel({
           worklistTableTitle:
@@ -64,6 +68,29 @@ sap.ui.define(
           },
         });
 
+        // Read the Quality Model to check if it's available
+        this.oQualityModel.read("/IntegrationPackages?$format=json", {
+          success: function (oData) {
+            // If the quality model is successfully read, set the flag to true
+            this.bQualityModelAvailable = true;
+          }.bind(this),
+          error: function (oError) {
+            // If there's an error, the flag remains false (default)
+            console.log("Quality Model read failed:", oError);
+          },
+        });
+
+        // Read the Test Model to check if it's available
+        this.oTestModel.read("/IntegrationPackages?$format=json", {
+          success: function (oData) {
+            // If the test model is successfully read, set the flag to true
+            this.bTestModelAvailable = true;
+          }.bind(this),
+          error: function (oError) {
+            // If there's an error, the flag remains false (default)
+            console.log("Quality Model read failed:", oError);
+          },
+        });
       },
 
       processPackagesResults: function (oData) {
@@ -140,42 +167,39 @@ sap.ui.define(
         // Read the runtime artifacts URL
         self.oIntegrationModel.read(runtimeUrl, {
           success: function (oDataRunTime) {
-            // Check if the runtime data is available
-            if (oDataRunTime) {
-              var runtimeArtifacts = oDataRunTime.results;
+            var runtimeArtifacts = oDataRunTime.results;
+            // Loop through allArtifacts to update with runtime versions
+            for (var i = 0; i < allArtifacts.length; i++) {
+              // Check if the artifact ID exists in the runtime data
+              var artifactId = allArtifacts[i].Id;
+              var runtimeArtifact = runtimeArtifacts.find(function (artifact) {
+                return artifact.Id === artifactId;
+              });
 
-              // Loop through allArtifacts to update with runtime versions
-              for (var i = 0; i < allArtifacts.length; i++) {
-                // Check if the artifact ID exists in the runtime data
-                var artifactId = allArtifacts[i].Id;
-                var runtimeArtifact = runtimeArtifacts.find(function (
-                  artifact
-                ) {
-                  return artifact.Id === artifactId;
-                });
-
-                // If runtime version is found, update the artifact
-                if (runtimeArtifact && runtimeArtifact.Version) {
-                  var updatedArtifact = Object.assign({}, allArtifacts[i]); // Create a copy of the artifact
-                  updatedArtifact.RuntimeVersion = runtimeArtifact.Version;
-                  updatedArtifacts.push(updatedArtifact);
-                } else {
-                  // If version data is not available, push the original artifact to the updatedArtifacts array
-                  updatedArtifacts.push(allArtifacts[i]);
-                }
+              // If runtime version is found, update the artifact
+              if (runtimeArtifact && runtimeArtifact.Version) {
+                var updatedArtifact = Object.assign({}, allArtifacts[i]); 
+                updatedArtifact.RuntimeVersion = runtimeArtifact.Version;
+                updatedArtifact.Status = runtimeArtifact.Status;
+                updatedArtifacts.push(updatedArtifact);
+              } else {
+                // If version data is not available, push the original artifact to the updatedArtifacts array
+                updatedArtifacts.push(allArtifacts[i]);
               }
-
-              // self.createModelofTable(updatedArtifacts);
-              self.processQualityModel(updatedArtifacts);
-            } else {
-              // self.createModelofTable(allArtifacts);
-              self.processQualityModel(allArtifacts);
             }
+            if (!self.bQualityModelAvailable) {
+              self.byId("_IDGenColumn16").setVisible(false);
+              self.byId("_IDGenColumn17").setVisible(false);
+              MessageToast.show(
+                "The quality system is currently unavailable. As a result, the related columns have been hidden.",
+                { duration: 5000 }
+              );
+            }
+            self.processControlNextModels(updatedArtifacts, true);
           },
           error: function (oErrorRunTime) {
             console.log("Error retrieving runtime data:", oErrorRunTime);
-            // If error occurs, return the original array to the caller
-            self.createModelofTable(allArtifacts);
+            self.processControlNextModels(updatedArtifacts);
           },
         });
       },
@@ -183,11 +207,17 @@ sap.ui.define(
       processQualityModel: function (integrationArtifacts) {
         var self = this;
         var runtimeQualityUrl = "/IntegrationRuntimeArtifacts?$format=json";
-        
+
         this.oQualityModel.read("/IntegrationPackages?$format=json", {
           success: function (oDataQuality) {
             let qualityPackages = oDataQuality.results;
-      
+
+            if (!qualityPackages || qualityPackages.length === 0) {
+              console.log("No quality packages found or invalid response.");
+              self.createModelofTable(integrationArtifacts);
+              return;
+            }
+
             for (var i = 0; i < qualityPackages.length; i++) {
               let packageName = qualityPackages[i].Name;
               let urlDesingTime =
@@ -198,54 +228,160 @@ sap.ui.define(
                 success: function (oDataDesignTime) {
                   for (var j = 0; j < oDataDesignTime.results.length; j++) {
                     var qualityArtifact = oDataDesignTime.results[j];
-                    var integrationArtifact = integrationArtifacts.find(function (
-                      artifact
-                    ) {
-                      return artifact.Id === qualityArtifact.Id;
-                    });
-      
+                    var integrationArtifact = integrationArtifacts.find(
+                      function (artifact) {
+                        return artifact.Id === qualityArtifact.Id;
+                      }
+                    );
+
                     if (integrationArtifact) {
-                      integrationArtifact.designtimeQuality = qualityArtifact.Version;
+                      integrationArtifact.designtimeQuality =
+                        qualityArtifact.Version;
                     }
                   }
 
                   self.oQualityModel.read(runtimeQualityUrl, {
                     success: function (oDataRuntimeQuality) {
                       let runtimeQualityArtifacts = oDataRuntimeQuality.results;
-      
+
                       for (var k = 0; k < runtimeQualityArtifacts.length; k++) {
                         var qualityRuntimeArtifact = runtimeQualityArtifacts[k];
-                        var integrationArtifact = integrationArtifacts.find(function (
-                          artifact
-                        ) {
-                          return artifact.Id === qualityRuntimeArtifact.Id;
-                        });
-      
+                        var integrationArtifact = integrationArtifacts.find(
+                          function (artifact) {
+                            return artifact.Id === qualityRuntimeArtifact.Id;
+                          }
+                        );
+
                         if (integrationArtifact) {
                           integrationArtifact.runtimeQuality =
+                            qualityRuntimeArtifact.Version;
+                        }
+                      }
+                      // self.createModelofTable(integrationArtifacts);
+                      self.processControlNextModels(
+                        integrationArtifacts,
+                        false
+                      );
+                    },
+                    error: function (oError) {
+                      console.log("Runtime of quality error is " + oError);
+                      // self.createModelofTable(integrationArtifacts);
+                      self.processControlNextModels(
+                        integrationArtifacts,
+                        false
+                      );
+                    },
+                  });
+                },
+                error: function (oError) {
+                  console.log("Designtime of quality error is " + oError);
+                  // self.createModelofTable(integrationArtifacts);
+                  self.processControlNextModels(integrationArtifacts, false);
+                },
+              });
+            }
+          },
+          error: function (oErrorQuality) {
+            console.log("Package of quality error is " + oErrorQuality);
+            self.processControlNextModels(true, integrationArtifacts);
+          },
+        });
+      },
+
+      processTestModel: function (integrationArtifacts) {
+        var self = this;
+        var runtimeTestUrl = "/IntegrationRuntimeArtifacts?$format=json";
+
+        this.oTestModel.read("/IntegrationPackages?$format=json", {
+          success: function (oDataQuality) {
+            let qualityPackages = oDataQuality.results;
+
+            if (!qualityPackages || qualityPackages.length === 0) {
+              console.log("No quality packages found or invalid response.");
+              self.createModelofTable(integrationArtifacts);
+              return;
+            }
+
+            for (var i = 0; i < qualityPackages.length; i++) {
+              let packageName = qualityPackages[i].Name;
+              let urlDesingTime =
+                "/IntegrationPackages('" +
+                qualityPackages[i].Id +
+                "')/IntegrationDesigntimeArtifacts";
+              self.oTestModel.read(urlDesingTime, {
+                success: function (oDataDesignTime) {
+                  for (var j = 0; j < oDataDesignTime.results.length; j++) {
+                    var testArtifact = oDataDesignTime.results[j];
+                    var integrationArtifact = integrationArtifacts.find(
+                      function (artifact) {
+                        return artifact.Id === testArtifact.Id;
+                      }
+                    );
+
+                    if (integrationArtifact) {
+                      integrationArtifact.designtimeTest = testArtifact.Version;
+                    }
+                  }
+
+                  self.oTestModel.read(runtimeTestUrl, {
+                    success: function (oDataRuntimeTest) {
+                      let runtimeTestArtifacts = oDataRuntimeTest.results;
+
+                      for (var k = 0; k < runtimeTestArtifacts.length; k++) {
+                        var qualityRuntimeArtifact = runtimeTestArtifacts[k];
+                        var integrationArtifact = integrationArtifacts.find(
+                          function (artifact) {
+                            return artifact.Id === qualityRuntimeArtifact.Id;
+                          }
+                        );
+
+                        if (integrationArtifact) {
+                          integrationArtifact.runtimeTest =
                             qualityRuntimeArtifact.Version;
                         }
                       }
                       self.createModelofTable(integrationArtifacts);
                     },
                     error: function (oError) {
-                      console.log(oError);
+                      console.log("Runtime of test error is " + oError);
                       self.createModelofTable(integrationArtifacts);
                     },
                   });
                 },
                 error: function (oError) {
-                  console.log(oError);
+                  console.log("Designtime of test error is " + oError);
                   self.createModelofTable(integrationArtifacts);
                 },
               });
             }
           },
           error: function (oErrorQuality) {
-            console.log(oErrorQuality);
+            console.log("Package of test error is " + oErrorQuality);
             self.createModelofTable(integrationArtifacts);
           },
         });
+      },
+
+      processControlNextModels: function (
+        integrationArtifacts,
+        isQualtyRequired
+      ) {
+        var self = this;
+        if (self.bQualityModelAvailable && isQualtyRequired) {
+          self.processQualityModel(integrationArtifacts);
+        } else {
+          if (self.bTestModelAvailable) {
+            self.processTestModel(integrationArtifacts);
+          } else {
+            self.byId("_IDGenColumn18").setVisible(false);
+            self.byId("_IDGenColumn19").setVisible(false);
+            MessageToast.show(
+              "The test system is currently unavailable. As a result, the related columns have been hidden.",
+              { duration: 5000 }
+            );
+            self.createModelofTable(integrationArtifacts);
+          }
+        }
       },
 
       convertTimestampToDate: function (timestamp) {
@@ -270,11 +406,14 @@ sap.ui.define(
           oResultArtifact.RuntimeVersion = null;
           oResultArtifact.designtimeQuality = null;
           oResultArtifact.runtimeQuality = null;
+          oResultArtifact.designtimeTest = null;
+          oResultArtifact.runtimeTest = null;
           oResultArtifact.Description = results[i].Description;
           oResultArtifact.CreatedAt = results[i].CreatedAt;
           oResultArtifact.CreatedAt = this.convertTimestampToDate(
             results[i].CreatedAt
           );
+          oResultArtifact.Status = null;
           oResultArtifact.PackageName = packageName;
           artifactsForPackage.push(oResultArtifact);
         }

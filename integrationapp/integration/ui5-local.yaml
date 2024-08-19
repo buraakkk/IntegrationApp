@@ -36,6 +36,9 @@ server:
           - path: /api
             url: https://f38ebb9dtrial.it-cpitrial05.cfapps.us10-001.hana.ondemand.com
             destination: Authentication 
+          - path: /third
+            url: https://f38ebb9dtrial.it-cpitrial05.cfapps.us10-001.hana.ondemand.com     
+            destination: Authentication           
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:

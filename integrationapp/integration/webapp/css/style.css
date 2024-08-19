@@ -1,4 +1,7 @@
-/* Enter your custom styles here */
-.highlight {
-    background-color: yellow;
+.greenText {
+    color: green;
+}
+
+.redText {
+    color: red;
 }

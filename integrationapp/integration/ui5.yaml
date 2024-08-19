@@ -20,7 +20,10 @@ server:
             destination: Prabhat_Integration_Suite  
           - path: /api
             url: https://f38ebb9dtrial.it-cpitrial05.cfapps.us10-001.hana.ondemand.com
-            destination: Authentication     
+            destination: Authentication  
+          - path: /third
+            url: https://f38ebb9dtrial.it-cpitrial05.cfapps.us10-001.hana.ondemand.com 
+            destination: Authentication    
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
