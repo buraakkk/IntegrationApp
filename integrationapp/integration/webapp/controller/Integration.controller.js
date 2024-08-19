@@ -476,13 +476,15 @@ sap.ui.define(
           _IDGenColumn2: { label: "Artifact Name", property: "Name" },
           _IDGenColumn14: { label: "Package Name", property: "PackageName" },
           _IDGenColumn4: { label: "DesignTime Version", property: "Version" },
-          _IDGenColumn9: {
-            label: "Runtime Version",
-            property: "RuntimeVersion",
-          },
+          _IDGenColumn9: {label: "Runtime Version",property: "RuntimeVersion",},
+          _IDGenColumn16: { label: "Design time(Q)", property: "designtimeQuality" },
+          _IDGenColumn17: {label: "Runtime(Q)",property: "runtimeQuality",},
+          _IDGenColumn18: { label: "Design time(T)", property: "designtimeTest" },
+          _IDGenColumn19: {label: "Runtime(T)",property: "runtimeTest",},
           _IDGenColumn11: { label: "Description", property: "Description" },
           _IDGenColumn3: { label: "Package Id", property: "PackageId" },
           _IDGenColumn10: { label: "Created Date", property: "CreatedAt" },
+          _IDGenColumn23: { label: "Status", property: "Status" },
         };
 
         // Get the user's column selection
@@ -573,6 +575,26 @@ sap.ui.define(
             path: "RuntimeVersion",
           },
           {
+            key: "_IDGenColumn16",
+            label: "Design time(Q)",
+            path: "designtimeQuality",
+          },
+          {
+            key: "_IDGenColumn17",
+            label: "Runtime(Q)",
+            path: "runtimeQuality",
+          },
+          {
+            key: "_IDGenColumn18",
+            label: "Design time(T)",
+            path: "designtimeTest",
+          },
+          {
+            key: "_IDGenColumn19",
+            label: "Runtime(T)",
+            path: "runtimeTest",
+          },
+          {
             key: "_IDGenColumn11",
             label: "Description",
             path: "Description",
@@ -586,6 +608,11 @@ sap.ui.define(
             key: "_IDGenColumn10",
             label: "Created At",
             path: "CreatedAt",
+          },
+          {
+            key: "_IDGenColumn23",
+            label: "Status",
+            path: "Status",
           },
         ]);
 
