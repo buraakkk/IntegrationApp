@@ -82,17 +82,26 @@
                             <ObjectStatus id="_IDGenObjectStatus1" text="{artifactsModel>RuntimeVersion}" state="{= ${artifactsModel>Status} === 'STARTED' ? 'Success' : ${artifactsModel>Status} === 'ERROR' ? 'Error' : 'None'}"/>
                             <HBox id="_IDGenHBox1">
                                 <core:Icon id="_IDGenIcon1" 
-                                    src="{= ${artifactsModel>designtimeQuality} ? 'sap-icon://status-critical' : '' }"
+                                    src="{= !!${artifactsModel>designtimeQuality} &amp;&amp; ${artifactsModel>Version} !== ${artifactsModel>designtimeQuality} ? 'sap-icon://status-critical' : '' }"
                                     color="red"
                                     visible="{= ${artifactsModel>Version} !== ${artifactsModel>runtimeQuality}}"
                                     size="1em"
                                 />
                                 <Text id="_IDGenText18" text="{artifactsModel>designtimeQuality}"/>
                             </HBox>
-                            <ObjectStatus id="_IDGenObjectStatus2" text="{artifactsModel>runtimeQuality}" state="{= ${artifactsModel>Status} === 'STARTED' ? 'Success' : ${artifactsModel>Status} === 'ERROR' ? 'Error' : 'None'}"/>
-                            <HBox id="_IDGenHBox2">
+                            <!-- <HBox id="_IDGenHBox2">
                                 <core:Icon id="_IDGenIcon2" 
-                                    src="{= ${artifactsModel>designtimeTest} ? 'sap-icon://status-critical' : '' }"  
+                                    src="{= !!${artifactsModel>runtimeQuality} &amp;&amp; ${artifactsModel>RuntimeVersion} !== ${artifactsModel>runtimeQuality} ? 'sap-icon://status-critical' : '' }"
+                                    color="red"
+                                    visible="{= ${artifactsModel>RuntimeVersion} !== ${artifactsModel>runtimeQuality}}"
+                                    size="1em"
+                                />
+                                <Text id="_IDGenText19" text="{artifactsModel>runtimeQuality}"/> -->
+                            <!-- </HBox> -->
+                            <ObjectStatus id="_IDGenObjectStatus2" text="{artifactsModel>runtimeQuality}" state="{= ${artifactsModel>Status} === 'STARTED' ? 'Success' : ${artifactsModel>Status} === 'ERROR' ? 'Error' : 'None'}"/>
+                            <HBox id="_IDGenHBox3">
+                                <core:Icon id="_IDGenIcon3" 
+                                     src="{= !!${artifactsModel>designtimeTest} &amp;&amp; ${artifactsModel>Version} !== ${artifactsModel>designtimeTest} ? 'sap-icon://status-critical' : '' }"  
                                     color="red"
                                     visible="{= ${artifactsModel>Version} !== ${artifactsModel>designtimeTest}}"
                                     size="1em"
