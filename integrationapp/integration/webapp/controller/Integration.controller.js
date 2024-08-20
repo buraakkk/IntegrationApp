@@ -253,8 +253,8 @@ sap.ui.define(
                         );
 
                         if (integrationArtifact) {
-                          integrationArtifact.runtimeQuality =
-                            qualityRuntimeArtifact.Version;
+                          integrationArtifact.runtimeQuality = qualityRuntimeArtifact.Version;
+                          integrationArtifact.QualityStatus = qualityRuntimeArtifact.Status;
                         }
                       }
                       // self.createModelofTable(integrationArtifacts);
@@ -320,6 +320,7 @@ sap.ui.define(
 
                     if (integrationArtifact) {
                       integrationArtifact.designtimeTest = testArtifact.Version;
+                      integrationArtifact.TestStatus = testArtifact.Status;
                     }
                   }
 
@@ -414,6 +415,8 @@ sap.ui.define(
             results[i].CreatedAt
           );
           oResultArtifact.Status = null;
+          oResultArtifact.QualityStatus = null;
+          oResultArtifact.TestStatus = null;
           oResultArtifact.PackageName = packageName;
           artifactsForPackage.push(oResultArtifact);
         }
@@ -485,6 +488,8 @@ sap.ui.define(
           _IDGenColumn3: { label: "Package Id", property: "PackageId" },
           _IDGenColumn10: { label: "Created Date", property: "CreatedAt" },
           _IDGenColumn23: { label: "Status", property: "Status" },
+          _IDGenColumn24: { label: "Status(Q)", property: "QualityStatus" },
+          _IDGenColumn25: { label: "Status(T)", property: "TestStatus" },
         };
 
         // Get the user's column selection
@@ -613,6 +618,16 @@ sap.ui.define(
             key: "_IDGenColumn23",
             label: "Status",
             path: "Status",
+          },
+          {
+            key: "_IDGenColumn24",
+            label: "Status(Q)",
+            path: "QualityStatus",
+          },
+          {
+            key: "_IDGenColumn25",
+            label: "Status(T)",
+            path: "TestStatus",
           },
         ]);
 
